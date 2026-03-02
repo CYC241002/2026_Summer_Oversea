@@ -1,0 +1,735 @@
+:root {
+    --bs-body-bg: #d0e1f1;
+    --bs-primary-bg: #1c449b;
+    --bs-primary-rgb: 28, 68, 155;
+    --bs-primary-rgba-half-transparent: 28, 68, 155, 0.5;
+    --bs-secondary-bg: #5776b7;
+    --bs-secondary-rgb: 87, 118, 183;
+    --bs-third-bg: #2555a7;
+    --bs-third-rgb: 37, 85, 167;
+    --title-main-hex :#054568;
+    --title-main-rgb : 5, 69, 104;
+    --title-sub-hex: #0ba29b;
+    --title-sub-rgb: 11, 162, 155;
+}
+
+.btn.btn-primary {
+    --bs-btn-bg: #15a1a0;
+    --bs-btn-hover-bg: #5ebfc6;
+    --bs-btn-hover-border-color: #a2e1e5;
+    --bs-btn-border-color: #5ebfc6;
+    --bs-btn-disabled-bg: #045e5a;
+    --bs-btn-disabled-border-color: #265d61;
+    --bs-btn-active-bg: #15a1a0;
+    --bs-btn-active-border-color: #5ebfc6;
+}
+
+* {
+    --tc-feature-pro-bg: #2a2e70;
+    --tc-feature-passion-bg: #f49430;
+    --tc-feature-fulfill-bg: #cd2e3d;
+    --tc-feature-wish-bg: #450640;
+}
+
+.text-justify {
+    text-align: justify;
+}
+
+.material-symbols-outlined {
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 48;
+}
+
+.daily-row .material-symbols-outlined {
+    vertical-align: middle;
+    padding-right: 0.1em;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.loading-overlay {
+    z-index: 9999;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #fff;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transition: opacity 1s ease-out;
+}
+
+.loading-overlay .loader {
+    position: relative;
+    margin: 0 auto;
+    width: 100px;
+}
+
+.loading-overlay .loader::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+}
+
+.loading-overlay .loader .circular {
+    animation: rotate 2s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+}
+
+.path {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    stroke-linecap: round;
+}
+  
+@keyframes rotate {
+    100% {
+      transform: rotate(360deg);
+    }
+}
+  
+@keyframes dash {
+    0% {
+        stroke-dasharray: 1, 200;
+        stroke-dashoffset: 0;
+    }
+    50% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -35px;
+    }
+    100% {
+        stroke-dasharray: 89, 200;
+        stroke-dashoffset: -124px;
+    }
+}
+  
+@keyframes color {
+    100%,
+    0% {
+        stroke: #23469c;
+    }
+    40% {
+        stroke: #78bc27;
+    }
+    66% {
+        stroke: #ce261a;
+    }
+    80%,
+    90% {
+        stroke: #000;
+    }
+  }
+
+nav.navbar .navbar-brand {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+nav.navbar .navbar-brand .brand-logo {
+    height: 36px;
+    width: auto;
+}
+
+nav.navbar .navbar-brand .brand-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin-left: 0.2em;
+}
+
+nav.navbar .navbar-brand .brand-title h1 {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--title-main-hex);
+    margin: 0;
+}
+
+nav.navbar .navbar-brand .brand-title h2 {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--title-sub-hex);
+    margin: 0;
+}
+
+nav.navbar .nav-item > .nav-link:hover, .dropdown-item:hover {
+    color: #fff;
+    background-color: RGBA(var(--bs-secondary-rgb),var(--bs-bg-opacity,1))!important;
+}
+
+header.header {
+    width: 100%;
+    margin-top: 3.75em;;
+    position: relative;
+}
+
+header.header .back {
+    position: relative;
+    width: 100%;
+}
+
+header.header .back img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    object-position: center center;
+}
+
+header.header .slogan {
+    position: absolute;
+    top: 150px;
+    left: 50%;
+    transform: translate(-50%, -25%);
+    color: #fff;
+    text-shadow: 5px 5px 10px #000;
+    text-align: center;
+    width: 100%;
+    transition: .5s;
+}
+
+header.header .slogan.start {
+    opacity: 0;
+    transform: translate(-50%, -100%);
+}
+
+header.header .slogan-1 {
+    z-index: 900;
+    position: relative;
+    top: 0;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+header.header .slogan-2 {
+    z-index: 800;
+    position: relative;
+    top: 1em;
+    font-size: 1.25em;
+}
+
+@media (min-width: 768px) and (max-width: 1399.99px) {
+    header.header .back img {
+        object-position: center 75%;
+        height: 96vh;
+    }
+
+    header.header .slogan {
+        width: 50%;
+        transform: translate(-92.5%, -100%);
+        text-align: left;
+        text-shadow: 5px 5px 5px #000;
+    }
+
+    header.header .slogan.start {
+        opacity: 0;
+        transform: translate(-92.5%, -200%);
+    }
+
+    header.header .slogan-1 {
+        top: 0;
+        font-size: 2.5em;
+    }
+
+    header.header .slogan-2 {
+        top: 0;
+        font-size: 1.2em;
+    }
+}
+
+@media (min-width: 1400px) {
+    header.header .back img {
+        object-position: center 57.5%;
+        height: 96vh;
+    }
+
+    header.header .slogan {
+        width: 80%;
+        transform: translate(-60.0%, -60%);
+        text-align: left;
+        text-shadow: 5px 5px 5px #000;
+    }
+
+    header.header .slogan.start {
+        opacity: 0;
+        transform: translate(-92.5%, -100%);
+    }
+
+    header.header .slogan-1 {
+        top: 0;
+        font-size: 5em;
+    }
+
+    header.header .slogan-2 {
+        top: 0;
+        font-size: 2em;
+    }
+}
+
+.nav-card .card .card-text .info {
+    font-size: 0.9em;
+}
+
+.nav-card .card .card-text .info .spot::before {
+    content: ' | ';
+    padding-left: 0.1em;
+    padding-right: 0.1em;
+}
+
+.nav-card .card {
+    transition: .3s;
+}
+
+.nav-card .card:hover {
+    transform: scale(1.02);
+}
+
+.nav-card .card a {
+    text-decoration: none;
+    color: #000;
+}
+
+@media (min-width: 1400px) {
+    .nav-card .card {
+        height: 27.5em;
+    }
+}
+
+.hero-section {
+    height: 100%;
+    min-height: 400px;
+    max-height: 100vh;
+}
+
+.hero-section img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+    filter: brightness(60%) contrast(95%);
+}
+
+.hero-section .description {
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #fff;
+    text-align: center;
+    z-index: 100;
+}
+
+.hero-section .description .inner .number {
+    font-weight: bold;
+    margin-bottom: 0.25em;
+    text-shadow: 0.1em 0.1em 0.2em #000;
+}
+
+.hero-section .description .inner h1 {
+    text-shadow: 0.1em 0.1em 0.2em #000;
+}
+
+.hero-section .description .inner .sub {
+    width: 90%;
+    max-width: 25em;
+    margin: 0 auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hero-section .description .inner .sub .detail-text {
+    display: inline-block;
+    text-align: left;
+}
+
+.hero-section .description .emphasis {
+    font-size: 1.5em;
+}
+
+.detail-link {
+    min-height: 3.5em;
+    position: sticky; 
+    top: 3.8em;
+    z-index: 1000;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.detail-link .nav a {
+    width: 8vw;
+    min-width: 96px;
+    text-decoration: none;
+}
+
+.detail-link .nav a .inner {
+    padding: 1em;
+    transition: .3s;
+    text-align: center;
+    color: #fff;
+}
+
+.detail-link .nav a:hover .inner {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.feature-img {
+    text-align: center;
+}
+
+.feature-img img {
+    width: 100%;
+    height: auto;
+}
+
+@media (min-width: 768px) {
+    .feature-img img {
+        max-width: 600px;
+        height: auto;
+    }
+}
+
+.feature {
+    margin-top: 1em;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.feature p {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin: 0;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    display: flex;
+    align-items: flex-start;
+}
+
+.feature p::before {
+    content: '★';
+    flex-shrink: 0;
+    width: 1.5em;
+    text-align: center;
+    padding-right: 0.25em;
+    padding-left: 0.25em;
+}
+
+.photolist .img-fluid {
+    transition: .1s;
+}
+
+.photolist .img-fluid:hover {
+    transform: scale(1.02);
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.daily-header > div {
+    color: #000;
+    background-color: RGBA(var(--bs-third-rgb),var(--bs-bg-opacity,1))!important;
+}
+
+/* .daily-content .card {
+    transition: .1s;
+}
+
+.daily-content .card:hover {
+    transform: scale(1.02);
+} */
+
+.daily-row .img-fluid {
+    transition: .1s;
+}
+
+.daily-row .img-fluid:hover {
+    transform: scale(1.02);
+}
+
+section.area {
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    background-size: 100% auto;
+    background-attachment: fixed;
+}
+
+.sec-1 {
+    background-image: url('../img/01-Japan_Yamanashi/01-Japan_Yamanashi_Background.jpg');
+}
+
+.sec-2 {
+    background-image: url('../img/02-Australia_Sydney/02-Australia_Sydney_Background.jpg');
+}
+
+.sec-3 {
+    background-image: url('../img/03-Canada_Vancouver/03-Canada_Vancouver_Background.jpg');
+}
+
+.sec-4 {
+    background-image: url('../img/04-America_Seattle/04-America_Seattle_Background.jpg');
+}
+
+.sec-5 {
+    background-image: url('../img/05-Indonesia_Bali/05-Indonesia_Bali_Background.jpg');
+}
+
+.sec-6 {
+    background-image: url('../img/06-Singapore/06-Singapore_Background.jpg');
+}
+
+.sec-7 {
+    background-image: url('../img/07-Japan_Shizuoka/07-Japan_Shizuoka_Background.jpg');
+}
+
+.sec-8 {
+    background-image: url('../img/08-Japan_Okinawa/08-Japan_Okinawa_Background.jpg');
+}
+
+
+.daily.daily-row {
+    padding-top: 2em;
+    padding-bottom: 2em;
+}
+
+.daily.daily-row:not(:last-child) {
+    border-bottom: 1px solid var(--bs-primary-bg);
+}
+
+.page-header {
+    margin-top: 72px;
+}
+
+.float-icons .float-icon {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 50%;
+    z-index: 1001;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);;
+    --bs-btn-hover-bg: #5ebfc6;
+}
+
+.float-icons .float-icon:hover {
+    background-color: var(--bs-btn-hover-bg);
+}
+
+.float-icons .float-icon img {
+    width: 48px;
+    height: auto;
+}
+
+.float-icons .popup {
+    position: fixed;
+    bottom: 20px;
+    right: 100px;
+    background-color: #fff;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    opacity: 0;
+    z-index: 1001;
+    visibility: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);;
+}
+
+.float-icons .popup.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.float-icons .popup img {
+    width: 200px;
+    height: auto;
+}
+
+/* @media (max-width: 767.99px) {
+    .daily-content {
+        margin-top: 1em;
+    }
+
+    .daily.daily-row .col-md-6:nth-child(even) {
+        margin-top: 2em;
+    }
+} */
+
+/* 每日行程 */
+.daily-schedule {
+    counter-reset: schedule-counter;
+}
+
+.daily-schedule .daily-row .day-count {
+    counter-increment: schedule-counter;
+    font-size: 1.25em;
+    font-weight: bold;
+    padding: 0.25em;
+    margin-bottom: 1em;
+    text-align: center;
+    align-self: center;
+}
+
+.daily-schedule .daily-row .day-count .day-count-number, 
+.daily-schedule .daily-row .day-count .day-count-no-number {
+    width: 4em;
+    height: 4em;
+    font-size: 0.5em;
+    background-color: var(--bs-primary-bg);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.daily-schedule .daily-row .day-count .day-count-number::before {
+    content: "Day "counter(schedule-counter);
+}
+
+.daily-schedule .daily-row .day-count .day-count-no-number {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .daily-schedule .daily-row .day-count .day-count-number, 
+    .daily-schedule .daily-row .day-count .day-count-no-number {
+        width: 5em;
+        height: 5em;
+        font-size: 1em;
+    }
+}
+
+.daily-schedule h2 {
+    font-size: 1.5em;
+}
+
+.daily-schedule h3 {
+    font-size: 1.25em;
+}
+
+/* 航班資訊 */
+.daily-schedule .flight .flight-row .spend-time::before,
+.daily-schedule .flight .flight-row .spend-time::after {
+    content: ' ';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: #666;
+    border-radius: 50%;
+    bottom: -5px;
+}
+
+.daily-schedule .flight .flight-row .spend-time::before {
+    left: 0;
+    transform: translateX(-50%);
+}
+
+.daily-schedule .flight .flight-row .spend-time::after {
+    right: 0;
+    transform: translateX(50%);
+}
+
+.daily-schedule .flight .flight-row .spend-time {
+    position: relative;
+    display: inline-block;
+    text-align: center;
+    border-bottom: 1px solid #666;
+}
+
+.daily-schedule .flight ul.post-script {
+    list-style-type: none;
+    padding-top: 1em;
+    padding-left: 20px;
+}
+
+.daily-schedule .flight ul.post-script li::before {
+    content: '※';
+    margin-right: 10px;
+}
+
+a[name] {
+    display: block;
+    position: relative;
+}
+
+section.area > a[name] {
+    top:-58px;
+}
+
+div.content article > a[name] {
+    top: -120px;
+}
+
+/* Icons */
+section.area .icon {
+    width: 32px;
+    height: 32px;
+    background-image: url('../img/icon_sprites.png');
+}
+
+.icon-airfare { /* 機票 */
+    background-position: -10px -10px;
+}
+
+.icon-traffic { /* 交通 */
+    background-position: -62px -10px;
+}
+
+.icon-lodging { /* 住宿 */
+    background-position: -10px -62px;
+}
+
+.icon-visit { /* 參訪 */
+    background-position: -62px -62px;
+}
+
+.icon-ticket { /* 門票 */
+    background-position: -114px -10px;
+}
+
+.icon-catering { /* 部分餐食 */
+    background-position: -114px -62px;
+}
+
+.icon-insurance { /* 保險 */
+    background-position: -10px -114px;
+}
+
+.icon-tip { /* 小費 */
+    background-position: -62px -114px;
+}
+
+.icon-visa_fee { /* 簽證費用 */
+    background-position: -114px -114px;
+}
+
+.icon-consume { /* 個人消費 */
+    background-position: -166px -10px;
+}
+
+.icon-self_catering { /* 自理餐食 */
+    background-position: -166px -62px;
+}
+
+.icon-personal_travel_insurance { /* 個人旅遊平安險 */
+    background-position: -166px -114px; 
+}
+
+.icon-hotel_tip { /* 飯店行李小費 */
+    background-position: -10px -166px;
+}

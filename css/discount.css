@@ -1,0 +1,89 @@
+/* 報名優惠 */
+#first-discount li {
+    font-size: 1.5em;
+}
+
+/* 報名贈品 */
+#gift ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#gift ul li::before {
+    content: '★';
+    padding-right: 0.5em;
+}
+
+ol {
+    list-style-type: none;
+    counter-reset: list-counter;
+    padding-left: 0;
+}
+
+ol li {
+    counter-increment: list-counter;
+    padding-left: 2em;
+    text-indent: -1.75em;
+}
+
+ol li::before {
+    content: "(" counter(list-counter) ")";
+    padding-right: 0.5em;
+}
+
+/* 報名程序 */
+#register {
+    counter-reset: step-counter;
+}
+
+#register .register-step {
+    position: relative;
+}
+
+#register .register-step .icon .material-symbols-outlined {
+    font-size: 2em;
+}
+
+#register .register-step .guidance {
+    position: relative;
+    word-break: break-all;
+    word-break: break-word;
+}
+
+#register .register-step .guidance::before {
+    content: '';
+    position: absolute;
+    left: -2em;
+    top: 1.5em;
+    width: 2em;
+    height: 3px;
+    background-color: var(--bs-primary);
+    z-index: -1;
+}
+
+#register .register-step .guidance h3::before {
+    counter-increment: step-counter;
+    content: "步驟 "counter(step-counter);
+    padding-right: 1em;
+}
+
+#register .register-step:last-child h3::before {
+    display: none;
+}
+
+#register .register-step .guidance h3 {
+    padding-top: 0.25em;
+    font-size: 1.2em;
+}
+
+@media (min-width: 768px) {
+    #register .register-step .guidance h3 {
+        padding-top: 0.5em;
+        font-size: 1.1em;
+    }
+
+    #register .register-step .guidance p, 
+    #register .register-step .guidance li {
+        font-size: 0.9em;
+    }
+}
