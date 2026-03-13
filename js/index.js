@@ -43,7 +43,7 @@
                                         <p class="d-flex align-items-center mb-1"><span class="material-symbols-outlined pe-2">travel</span><span class="days">${calculateDays(item.startDate, item.endDate)}日</span><span class="spot">${item.mainVisit}</span></p>
                                         <p class="d-flex align-items-center"><span class="material-symbols-outlined pe-2">group</span>${item.target}</p>
                                     </div>
-                                    <p>7/24~7/30(${toChineseDate(item.startDate, true)}-${toChineseDate(item.endDate, true)})</p>
+                                    <p>${toShortDate(item.startDate)}~${toShortDate(item.endDate)}(${toChineseDate(item.startDate, true)}-${toChineseDate(item.endDate, true)})</p>
                                 </div>
                             </div>
                         </a>
@@ -342,6 +342,13 @@
         
         // 或是更直覺的手動拼接：
         // return `${d.getFullYear()}年${(d.getMonth() + 1).toString().padStart(2, '0')}月${d.getDate().toString().padStart(2, '0')}日`;
+    }
+
+    function toShortDate(dateVal) {
+        const d = new Date(dateVal)
+        if (isNaN(d.getTime())) return dateVal
+
+        return `${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`
     }
 
     function calculateDays(startDate, endDate) {
