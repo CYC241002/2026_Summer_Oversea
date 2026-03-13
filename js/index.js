@@ -52,6 +52,7 @@
 
             var section = document.createElement('section')
             section.className = 'area container-fluid p-0'
+            section.style = `background-color: ${item.backColor || '#ffffff'}; color: ${item.textColor || '#000000'};`
             section.innerHTML = `<a name="sec${item.session}"></a>`
             var heroSection = `<div class="hero-section row m-0">
                 <div class="col-12 h-100 w-100 p-0" style="position: relative;">
@@ -67,7 +68,7 @@
                     </div>
                 </div>
             </div>`
-            var detailLinkSection = `<div class="detail-link row m-0 mb-5 text-bg-secondary">
+            var detailLinkSection = `<div class="detail-link row m-0 mb-5" style="background-color: ${item.subColor || '#000'};">
                 <div class="m-auto row col-12 col-lg-9 align-items-center">
                     <div class="nav col-12 col-lg-6 d-flex justify-content-center justify-content-md-start align-items-center h-100">
                         <a href="#sec${item.session}-intro" class="h-100"><div class="inner">營隊特色</div></a>
@@ -119,13 +120,13 @@
                 schedule.forEach((daily) => {
                     var title = daily.theme != '' ? `${daily.theme}-${daily.route}` : daily.route
                     var dailySection = `<div class="row col-12 daily daily-row">
-                        <div class="col-2 day-count"><span class="day-count-number"></span></div>
+                        <div class="col-2 d-flex flex-column"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
                         <div class="col-10 col-lg-7 d-flex align-items-center"><h2>${title}</h2></div>
                         <div class="col-12 col-lg-3 row pt-3 pt-lg-0">
-                            <div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">local_dining</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>
-                            <div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">lunch_dining</span>午餐</div><div class="col-8 col-lg-8">${daily.lunch}</div>
-                            <div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">restaurant</span>晚餐</div><div class="col-8 col-lg-8">${daily.dinner}</div>
-                            <div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">hotel</span>旅館</div><div class="col-8 col-lg-8">${daily.accommodation}</div>
+                            ${daily.breakfast ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">free_breakfast</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>` : ''}
+                            ${daily.lunch ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">lunch_dining</span>午餐</div><div class="col-8 col-lg-8">${daily.lunch}</div>` : ''}
+                            ${daily.dinner ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">restaurant</span>晚餐</div><div class="col-8 col-lg-8">${daily.dinner}</div>` : ''}
+                            ${daily.accommodation ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">hotel</span>旅館</div><div class="col-8 col-lg-8">${daily.accommodation}</div>` : ''}
                         </div>
                     </div>`
                     scheduleArticle += dailySection
@@ -156,14 +157,14 @@
                         </div>
                         <div class="col-3 d-flex flex-column align-items-center">
                             <p class="fw-bold m-0">${flight.departTime}</p>
-                            <p class="text-secondary m-0">${departAirportText}</p>
+                            <p class="m-0">${departAirportText}</p>
                         </div>
                         <div class="col-6 col-lg-1">
                             <span class="spend-time w-100">${flight.duration}</span>
                         </div>
                         <div class="col-3 d-flex flex-column align-items-center">
                             <p class="fw-bold m-0">${flight.arriveTime}</p>
-                            <p class="text-secondary m-0">${arriveAirportText}</p>
+                            <p class="m-0">${arriveAirportText}</p>
                         </div>
                     </div>`
                 })
