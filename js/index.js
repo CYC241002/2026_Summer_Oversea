@@ -156,14 +156,14 @@
                             <p class="fs-6 m-0">${flight.flight}</p>
                         </div>
                         <div class="col-3 d-flex flex-column align-items-center">
-                            <p class="fw-bold m-0">${flight.departTime}</p>
+                            <p class="fw-bold m-0">${flight.departDate} ${flight.departTime}</p>
                             <p class="m-0">${departAirportText}</p>
                         </div>
                         <div class="col-6 col-lg-1">
                             <span class="spend-time w-100">${flight.duration}</span>
                         </div>
                         <div class="col-3 d-flex flex-column align-items-center">
-                            <p class="fw-bold m-0">${flight.arriveTime}</p>
+                            <p class="fw-bold m-0">${flight.arriveDate} ${flight.arriveTime}</p>
                             <p class="m-0">${arriveAirportText}</p>
                         </div>
                     </div>`
