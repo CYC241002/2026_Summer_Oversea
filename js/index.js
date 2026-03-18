@@ -19,7 +19,7 @@
         "hotel_tip": "飯店行李小費"
     }
 
-    fetch('./js/data.json').then(res => res.json()).then((data) => {
+    fetch('./js/data.json', { cache: 'no-cache' }).then(res => res.json()).then((data) => {
         //read data
         if (!data) {
             console.log("No data found")

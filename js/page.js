@@ -1,5 +1,5 @@
 (function(){
-    fetch('./js/data.json').then(res => res.json()).then(data => {
+    fetch('./js/data.json', { cache: 'no-cache' }).then(res => res.json()).then(data => {
         if (!data) {
             return
         }
