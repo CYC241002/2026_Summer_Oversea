@@ -120,8 +120,8 @@
                 schedule.forEach((daily) => {
                     var title = daily.theme != '' ? `${daily.theme}-${daily.route}` : daily.route
                     var dailySection = `<div class="row col-12 daily daily-row">
-                        <div class="col-2 d-flex flex-column"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
-                        <div class="col-10 col-lg-7 d-flex align-items-center"><h2>${title.replace('\n', '<br>')}</h2></div>
+                        <div class="col-12 col-lg-2 d-flex flex-row flex-lg-column align-items-center gap-2 gap-lg-3"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
+                        <div class="col-12 col-lg-7 d-flex align-items-center p-1"><h2>${title.replace('\n', '<br>')}</h2></div>
                         <div class="col-12 col-lg-3 row pt-3 pt-lg-0">
                             ${daily.breakfast ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">free_breakfast</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>` : ''}
                             ${daily.lunch ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">lunch_dining</span>午餐</div><div class="col-8 col-lg-8">${daily.lunch}</div>` : ''}

@@ -573,12 +573,17 @@ section.area {
     counter-reset: schedule-counter;
 }
 
+.daily-row {
+    display: flex;
+    flex-direction: column;
+}
+
 .daily-schedule .daily-row .day-count {
     counter-increment: schedule-counter;
     font-size: 1.25em;
     font-weight: bold;
     padding: 0.25em;
-    margin-bottom: 1em;
+    margin: 0;
     text-align: center;
     align-self: center;
 }
@@ -606,6 +611,10 @@ section.area {
 }
 
 @media (min-width: 768px) {
+    .daily-row {
+        flex-direction: row;
+    }
+
     .daily-schedule .daily-row .day-count .day-count-number, 
     .daily-schedule .daily-row .day-count .day-count-no-number {
         width: 5em;
