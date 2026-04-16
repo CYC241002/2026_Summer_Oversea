@@ -1,4 +1,18 @@
 (function() {
+    class SiteFooter extends HTMLElement {
+        connectedCallback() {
+            this.innerHTML = `
+            <footer class="container-fluid text-bg-light pt-2">
+                <div class="row m-auto text-center">
+                    <p><img src="img/logo.png" alt="救國團" style="height: 30px; width: auto;">救國團總團部  版權所有</p>
+                    <p>地址:台北市中山區民權東路二段69號二樓 電話 <a href="tel:0225965858">02-2596-5858</a> 轉 255、264 傳真 02-2596-5796</p>
+                    <p>Copyright © 2026 CHINA YOUTH CORPS All Rights Reserved. 信箱：<a href="mailto:atv@cyc.tw">atv@cyc.tw</a></p>
+                </div>
+            </footer>
+            `
+        }
+    }
+
     class LineButton extends HTMLElement {
         connectedCallback() {
             this._render()
@@ -108,5 +122,7 @@
              `
         }
     }
+
+    customElements.define('site-footer', SiteFooter)
     customElements.define('line-button', LineButton)
 })()
