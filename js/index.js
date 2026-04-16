@@ -499,7 +499,7 @@
                         <article class="row daily-schedule">
                             <a name="sec${context.session}-daily-schedule"></a>
                             ${schedule ? schedule.map((daily) => {
-                                var title = daily.theme != '' ? `${daily.theme}-${daily.route}` : daily.route
+                                var title = daily.theme != '' ? `${daily.theme}：${daily.route}` : daily.route
                                 return `<div class="row col-12 daily daily-row">
                                     <div class="col-12 col-lg-2 d-flex flex-row flex-lg-column align-items-center gap-2 gap-lg-3"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
                                     <div class="col-12 col-lg-7 d-flex align-items-center p-1"><h2>${title.replace('\n', '<br>')}</h2></div>
