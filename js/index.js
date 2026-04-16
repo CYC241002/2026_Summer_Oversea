@@ -767,6 +767,6 @@
 
         if (isNaN(sDate.getTime()) || isNaN(eDate.getTime())) return 0
 
-        return Math.floor((eDate.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24))
+        return Math.floor((eDate.getTime() - sDate.getTime()) / (1000 * 60 * 60 * 24)) + 1
     }
 })()
