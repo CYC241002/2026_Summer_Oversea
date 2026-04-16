@@ -1,8 +1,4 @@
 (function() {
-    const generalView = document.querySelector('#generalView > .row')
-    const container = document.querySelector('.section-container')
-    const campMenuLinkList = document.querySelector('#campMenuLinkList')
-
     const SHEET_DAY_PRICE_LIST = {
         "airfare": "機票" ,
         "traffic": "交通",
@@ -19,6 +15,590 @@
         "hotel_tip": "飯店行李小費"
     }
 
+    class SessionCard extends HTMLElement {
+        connectedCallback() {
+            const scriptTag = this.querySelector('script[type="application/json"]')
+
+            if (!scriptTag?.textContent.trim()) return
+
+            try {
+                this._data = JSON.parse(scriptTag.textContent)
+            } catch (e) {
+                console.error("SessionCard data error:", e)
+                return
+            }
+
+            if (!this._data?.session) return
+
+            this._render(this._data)
+        }
+
+        _render(context) {
+            if (!context) return
+
+            this.innerHTML = `
+                <style>
+                    .card .card-text .info {
+                        font-size: 0.9em;
+                    }
+
+                    .card .card-text .info .spot::before {
+                        content: ' | ';
+                        padding-left: 0.1em;
+                        padding-right: 0.1em;
+                    }
+
+                    .card {
+                        transition: .3s;
+                    }
+
+                    .card:hover {
+                        transform: scale(1.02);
+                    }
+
+                    .card a {
+                        text-decoration: none;
+                        color: #000;
+                    }
+
+                    @media (min-width: 1400px) {
+                        .card {
+                            height: 27.5em;
+                        }
+}
+                </style>
+                <div>
+                    <div class="card shadow-sm m-2 p-2">
+                        <a href="#sec${context.session}">
+                            <img class="card-img-top" src="img/${context.session}/${context.session}_header.jpg">
+                            <div class="card-body">
+                                <h6 class="card-subtitle text-body-secondary">${context.code}</h6>
+                                <h5 class="card-title">${context.area}</h5>
+                                <div class="card-text">
+                                    <div class="info">
+                                        <p class="d-flex align-items-center mb-1"><span class="material-symbols-outlined pe-2">travel</span><span class="days">${calculateDays(context.startDate, context.endDate)}日</span><span class="spot">${context.mainVisit}</span></p>
+                                        <p class="d-flex align-items-center"><span class="material-symbols-outlined pe-2">group</span>${context.target}</p>
+                                    </div>
+                                    <p>${toShortDate(context.startDate)}~${toShortDate(context.endDate)}(${toChineseDate(context.startDate, true)}-${toChineseDate(context.endDate, true)})</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            `
+        }
+    }
+    class SessionSection extends HTMLElement {
+        connectedCallback() {
+            const scriptTag = this.querySelector('script[type="application/json"]')
+
+            if (!scriptTag?.textContent.trim()) return
+
+            try {
+                const {item, gallery, schedule, flights} = JSON.parse(scriptTag.textContent)
+                this._item = item
+                this._gallery = gallery
+                this._schedule = schedule
+                this._flights = flights
+            } catch (e) {
+                console.error("SessionCard data error:", e)
+                return
+            }
+
+            if (!this._item?.session) return
+
+            this._render(this._item, this._gallery, this._schedule, this._flights)
+        }
+
+        _render(context, gallery, schedule, flights) {
+            if (!context) return
+
+            var isAbleToRegister = context.status === 'PREPARATION' ? true : false
+
+            this.innerHTML = `
+                <style>
+                .hero-section {
+                    height: 100%;
+                    min-height: 400px;
+                    max-height: 100vh;
+                }
+
+                .hero-section img {
+                    width: 100%;
+                    height: 100vh;
+                    object-fit: cover;
+                    filter: brightness(60%) contrast(95%);
+                }
+
+                .hero-section .description {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    color: #fff;
+                    text-align: center;
+                    z-index: 100;
+                }
+
+                .hero-section .description .inner .number {
+                    font-weight: bold;
+                    margin-bottom: 0.25em;
+                    text-shadow: 0.1em 0.1em 0.2em #000;
+                }
+
+                .hero-section .description .inner h1 {
+                    text-shadow: 0.1em 0.1em 0.2em #000;
+                }
+
+                .hero-section .description .inner .sub {
+                    width: 90%;
+                    max-width: 25em;
+                    margin: 0 auto;
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+
+                .hero-section .description .inner .sub .detail-text {
+                    display: inline-block;
+                    text-align: left;
+                }
+
+                .hero-section .description .emphasis {
+                    font-size: 1.5em;
+                }
+
+                .detail-link {
+                    min-height: 3.5em;
+                    position: sticky; 
+                    top: 3.8em;
+                    z-index: 1000;
+                    box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+                }
+
+                .detail-link .nav a {
+                    width: 8vw;
+                    min-width: 96px;
+                    text-decoration: none;
+                }
+
+                .detail-link .nav a .inner {
+                    padding: 1em;
+                    transition: .3s;
+                    text-align: center;
+                    color: #fff;
+                }
+
+                .detail-link .nav a:hover .inner {
+                    background-color: rgba(0, 0, 0, 0.5);
+                }
+
+                .feature-img {
+                    text-align: center;
+                }
+
+                .feature-img img {
+                    width: 100%;
+                    height: auto;
+                }
+
+                @media (min-width: 768px) {
+                    .feature-img img {
+                        max-width: 600px;
+                        height: auto;
+                    }
+                }
+
+                .feature {
+                    margin-top: 1em;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .feature p {
+                    font-size: 1.2em;
+                    font-weight: bold;
+                    margin: 0;
+                    padding-top: 0.1em;
+                    padding-bottom: 0.1em;
+                    display: flex;
+                    align-items: flex-start;
+                }
+
+                .feature p::before {
+                    content: '★';
+                    flex-shrink: 0;
+                    width: 1.5em;
+                    text-align: center;
+                    padding-right: 0.25em;
+                    padding-left: 0.25em;
+                }
+
+                .photolist .img-fluid {
+                    transition: .1s;
+                }
+
+                .photolist .img-fluid:hover {
+                    transform: scale(1.02);
+                }
+
+                .row {
+                    margin-left: 0;
+                    margin-right: 0;
+                }
+
+                .daily-header > div {
+                    color: #000;
+                    background-color: RGBA(var(--bs-third-rgb),var(--bs-bg-opacity,1))!important;
+                }
+
+                /* .daily-content .card {
+                    transition: .1s;
+                }
+
+                .daily-content .card:hover {
+                    transform: scale(1.02);
+                } */
+
+                .daily-row .img-fluid {
+                    transition: .1s;
+                }
+
+                .daily-row .img-fluid:hover {
+                    transform: scale(1.02);
+                }
+
+                section.area {
+                    background-repeat: no-repeat;
+                    background-position: center bottom;
+                    background-size: 100% auto;
+                    background-attachment: fixed;
+                }
+
+                .daily.daily-row {
+                    padding-top: 2em;
+                    padding-bottom: 2em;
+                }
+
+                .daily.daily-row:not(:last-child) {
+                    border-bottom: 1px solid var(--bs-primary-bg);
+                }
+                    
+                .daily-schedule {
+                    counter-reset: schedule-counter;
+                }
+
+                .daily-row {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                .daily-schedule .daily-row .day-count {
+                    counter-increment: schedule-counter;
+                    font-size: 1.25em;
+                    font-weight: bold;
+                    padding: 0.25em;
+                    margin: 0;
+                    text-align: center;
+                    align-self: center;
+                }
+
+                .daily-schedule .daily-row .day-count .day-count-number, 
+                .daily-schedule .daily-row .day-count .day-count-no-number {
+                    width: 4em;
+                    height: 4em;
+                    font-size: 0.5em;
+                    background-color: var(--bs-primary-bg);
+                    color: #fff;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0;
+                }
+
+                .daily-schedule .daily-row .day-count .day-count-number::before {
+                    content: "Day "counter(schedule-counter);
+                }
+
+                .daily-schedule .daily-row .day-count .day-count-no-number {
+                    text-align: center;
+                }
+
+                @media (min-width: 768px) {
+                    .daily-row {
+                        flex-direction: row;
+                    }
+
+                    .daily-schedule .daily-row .day-count .day-count-number, 
+                    .daily-schedule .daily-row .day-count .day-count-no-number {
+                        width: 5em;
+                        height: 5em;
+                        font-size: 1em;
+                    }
+                }
+
+                .daily-schedule h2 {
+                    font-size: 1.5em;
+                }
+
+                .daily-schedule h3 {
+                    font-size: 1.25em;
+                }
+
+                /* 航班資訊 */
+                .daily-schedule .flight .flight-row .spend-time::before,
+                .daily-schedule .flight .flight-row .spend-time::after {
+                    content: ' ';
+                    position: absolute;
+                    width: 10px;
+                    height: 10px;
+                    background-color: #666;
+                    border-radius: 50%;
+                    bottom: -5px;
+                }
+
+                .daily-schedule .flight .flight-row .spend-time::before {
+                    left: 0;
+                    transform: translateX(-50%);
+                }
+
+                .daily-schedule .flight .flight-row .spend-time::after {
+                    right: 0;
+                    transform: translateX(50%);
+                }
+
+                .daily-schedule .flight .flight-row .spend-time {
+                    position: relative;
+                    display: inline-block;
+                    text-align: center;
+                    border-bottom: 1px solid #666;
+                }
+
+                .daily-schedule .flight ul.post-script {
+                    list-style-type: none;
+                    padding-top: 1em;
+                    padding-left: 20px;
+                }
+
+                .daily-schedule .flight ul.post-script li::before {
+                    content: '※';
+                    margin-right: 10px;
+                }
+
+                .price-icon {
+                    width: 32px;
+                    height: 32px;
+                    background-image: url('img/icon_sprites.png');
+                }
+
+                .price-icon.icon-airfare { /* 機票 */
+                    background-position: -10px -10px;
+                }
+
+                .price-icon.icon-traffic { /* 交通 */
+                    background-position: -62px -10px;
+                }
+
+                .price-icon.icon-lodging { /* 住宿 */
+                    background-position: -10px -62px;
+                }
+
+                .price-icon.icon-visit { /* 參訪 */
+                    background-position: -62px -62px;
+                }
+
+                .price-icon.icon-ticket { /* 門票 */
+                    background-position: -114px -10px;
+                }
+
+                .price-icon.icon-catering { /* 部分餐食 */
+                    background-position: -114px -62px;
+                }
+
+                .price-icon.icon-insurance { /* 保險 */
+                    background-position: -10px -114px;
+                }
+
+                .price-icon.icon-tip { /* 小費 */
+                    background-position: -62px -114px;
+                }
+
+                .price-icon.icon-visa_fee { /* 簽證費用 */
+                    background-position: -114px -114px;
+                }
+
+                .price-icon.icon-consume { /* 個人消費 */
+                    background-position: -166px -10px;
+                }
+
+                .price-icon.icon-self_catering { /* 自理餐食 */
+                    background-position: -166px -62px;
+                }
+
+                .price-icon.icon-personal_travel_insurance { /* 個人旅遊平安險 */
+                    background-position: -166px -114px; 
+                }
+
+                .price-icon.icon-hotel_tip { /* 飯店行李小費 */
+                    background-position: -10px -166px;
+                }
+                </style>
+                <section style="background-color: var(--session-background-color, #ffffff) !important; color: var(--session-text-color, #000000) !important;">
+                    <a name="sec${context.session}"></a>
+                    <div class="hero-section row m-0">
+                        <div class="col-12 h-100 w-100 p-0" style="position: relative;">
+                            <img src="img/${context.session}/${context.session}_header.jpg">
+                            <div class="description row row-cols-1 w-100 h-100 d-flex align-items-center">
+                                <div class="inner">
+                                    <p class="number">${context.code}</p>
+                                    <h1 class="fw-bold">${context.area}</h1>
+                                    <div class="sub rounded p-3">
+                                        <p class="mx-auto detail-text">活動日期：${toChineseDate(context.startDate)}至${toChineseDate(context.endDate)}<br>報名對象：${context.target}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-link row m-0 mb-5" style="background-color: ${context.subColor || '#000'} !important;">
+                        <div class="m-auto row col-12 col-lg-9 align-items-center">
+                            <div class="nav col-12 col-lg-6 d-flex justify-content-center justify-content-md-start align-items-center h-100">
+                                <a href="#sec${context.session}-intro" class="h-100"><div class="inner">營隊特色</div></a>
+                                <a href="#sec${context.session}-daily-schedule" class="h-100"><div class="inner">每日行程</div></a>
+                                <a href="#sec${context.session}-attention" class="h-100"><div class="inner">注意事項</div></a>
+                            </div>
+                            <div class="col-12 col-lg-6 d-flex justify-content-center justify-content-md-end align-items-center h-100 p-2">
+                                <div class="h-100">
+                                    <a class="btn btn-primary${context.link !== '' && isAbleToRegister ? '' : ' disabled'}" href="${context.link !== '' && isAbleToRegister ? context.link : '#'}" target="_blank" role="button">
+                                        ${(() => {
+                                            if (isAbleToRegister) {
+                                                return context.link === '' ? '尚未開放報名' : '優惠報名請點我！'
+                                            } else {
+                                                if (context.status === 'ON_SCHEDULE') {
+                                                    return '出團中'
+                                                } else if (context.status === 'ENDED') {
+                                                    return '本次活動已結束，感謝關注'
+                                                } else {
+                                                    return '本次活動已取消'
+                                                }
+                                            } 
+                                        })()}
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="content row col-12 col-lg-9 m-auto">
+                        <article class="row">
+                            <a name="sec${context.session}-intro"></a>
+                            <h1 class="text-center">營隊特色</h1>
+                            <div class="feature w-75 p-3 rounded border border-secondary border-2">
+                                ${markdownToHTML(context.feature)}
+                            </div>
+                            <div class="row mt-2 mb-2 photolist">
+                                ${gallery.map((img) => `<div class="col-4 p-2"><img src="img/${context.session}/${img.fileName}" class="img-fluid" loading="lazy" alt="${img.description || '營隊照片'}"></div>`).join('')}
+                            </div>
+                        </article>
+                        <article class="row daily-schedule">
+                            <a name="sec${context.session}-daily-schedule"></a>
+                            ${schedule ? schedule.map((daily) => {
+                                var title = daily.theme != '' ? `${daily.theme}-${daily.route}` : daily.route
+                                return `<div class="row col-12 daily daily-row">
+                                    <div class="col-12 col-lg-2 d-flex flex-row flex-lg-column align-items-center gap-2 gap-lg-3"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
+                                    <div class="col-12 col-lg-7 d-flex align-items-center p-1"><h2>${title.replace('\n', '<br>')}</h2></div>
+                                    <div class="col-12 col-lg-3 row pt-3 pt-lg-0">
+                                        ${daily.breakfast ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">free_breakfast</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>` : ''}
+                                        ${daily.lunch ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">lunch_dining</span>午餐</div><div class="col-8 col-lg-8">${daily.lunch}</div>` : ''}
+                                        ${daily.dinner ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">restaurant</span>晚餐</div><div class="col-8 col-lg-8">${daily.dinner}</div>` : ''}
+                                        ${daily.accommodation ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">hotel</span>旅館</div><div class="col-8 col-lg-8">${daily.accommodation}</div>` : ''}
+                                    </div>
+                                </div>`
+                            }).join('') : ''}
+                            <div class="row col-12 flight pt-4">
+                                <h2 class="col-12 pb-2">參考航班<small class="text-secondary ps-2 fs-6">航班時間僅為參考。</small></h2>
+                                ${flights ? flights.map((flight) => {
+                                    var boundText = ''
+                                    if (flight.type === 'outbound') {
+                                        boundText = '去程'
+                                    } else if (flight.type === 'inbound') {
+                                        boundText = '返程'
+                                    } else {
+                                        boundText = '轉程'
+                                    }
+
+                                    var departAirportText = flight.departAirportRuby !== '' ? `<ruby>${flight.departAirport}<rp>(</rp><rt>${flight.departAirportRuby}</rt><rp>)</rp></ruby>` : flight.departAirport
+                                    var arriveAirportText = flight.arriveAirportRuby !== '' ? `<ruby>${flight.arriveAirport}<rp>(</rp><rt>${flight.arriveAirportRuby}</rt><rp>)</rp></ruby>` : flight.arriveAirport
+                                    return `<div class="col-12 row flight-row d-flex align-items-center border border-primary border-1 rounded p-1">
+                                        <div class="col-2 col-lg-1">
+                                            <p class="badge rounded-pill text-bg-info fs-6 m-0">${boundText}</p>
+                                        </div>
+                                        <div class="col-10 col-lg-4">
+                                            <p class="fs-6 m-0">${flight.flight}</p>
+                                        </div>
+                                        <div class="col-3 d-flex flex-column align-items-center">
+                                            <p class="fw-bold m-0">${flight.departDate} ${flight.departTime}</p>
+                                            <p class="m-0">${departAirportText}</p>
+                                        </div>
+                                        <div class="col-6 col-lg-1">
+                                            <span class="spend-time w-100">${flight.duration}</span>
+                                        </div>
+                                        <div class="col-3 d-flex flex-column align-items-center">
+                                            <p class="fw-bold m-0">${flight.arriveDate} ${flight.arriveTime}</p>
+                                            <p class="m-0">${arriveAirportText}</p>
+                                        </div>
+                                    </div>`
+                                }).join('') : ''}
+                                <ul class="post-script">
+                                    <li>以上航班時間僅供參考，實際以航空公司最後之公告航班時間為準。</li>
+                                </ul>
+                            </div>
+                        </article>
+                        <article class="row">
+                            <a name="sec${context.session}-attention"></a>
+                            <div class="col-12 mt-5 mb-5">
+                                <h1 class="text-center">注意事項</h1>
+                                <div class="mt-4 p-4 rounded border border-secondary border-2">
+                                    <h2>經費說明</h2>
+                                    <p class="fw-bold">專案優惠價：${context.price}。</p>
+                                    <h3>費用包含</h3>
+                                    <div class="d-flex flex-wrap justify-content-start align-items-start text-center">
+                                        ${context.priceInclude.map((includeItem) => {
+                                            return `<div class="d-flex flex-column align-items-center ps-1 pe-1" style="width: 4.5em;">
+                                                <div class="price-icon icon-${includeItem}"></div>
+                                                <p class="m-0">${SHEET_DAY_PRICE_LIST[includeItem] || includeItem}</p>
+                                            </div>`
+                                        }).join('')}
+                                    </div>
+                                    <h3>費用不含</h3>
+                                    <div class="d-flex flex-wrap justify-content-start align-items-start text-center">
+                                        ${context.priceExclude.map((excludeItem) => {
+                                            return `<div class="d-flex flex-column align-items-center ps-1 pe-1" style="width: 4.5em;">
+                                                <div class="price-icon icon-${excludeItem}"></div>
+                                                <p class="m-0">${SHEET_DAY_PRICE_LIST[excludeItem] || excludeItem}</p>
+                                            </div>`
+                                        }).join('')}
+                                    </div>
+                                    <h2>特殊說明</h2>
+                                    <ul>
+                                        <li>報名對象：${context.target}</li>
+                                        <li>人數<span class="fw-bold">${context.quota}</span>人，<span class="fw-bold">${context.waitable ? '可候補' : '無候補'}</span>。</li>
+                                        ${context.otherAttention.split('\n').map(line => line.trim() !== '' ? `<li>${line}</li>` : '').join('')}
+                                        <li>報名請洽：<a href="tel:${context.tel}">${context.tel}</a>&nbsp;${context.chargePerson}
+                                    </ul>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                </section>
+            `
+        }
+    }
+
+    customElements.define('session-card', SessionCard)
+    customElements.define('session-section', SessionSection)
+
+    const generalView = document.querySelector('#generalView > .row')
+    const container = document.querySelector('.section-container')
+    const campMenuLinkList = document.querySelector('#campMenuLinkList')
+
+
     fetch('./js/data.json', { cache: 'no-cache' }).then(res => res.json()).then((data) => {
         //read data
         if (!data) {
@@ -31,193 +611,21 @@
             var menuLink = `<li><a class="dropdown-item" href="index.html#sec${item.session}">${item.area}</a></li>`
             campMenuLinkList.innerHTML += menuLink
 
-            generalView.innerHTML += `<div class="col-12 col-lg-3">
-                    <div class="card shadow-sm m-2 p-2">
-                        <a href="#sec${item.session}">
-                            <img class="card-img-top" src="img/${item.session}/${item.session}_header.jpg">
-                            <div class="card-body">
-                                <h6 class="card-subtitle text-body-secondary">${item.code}</h6>
-                                <h5 class="card-title">${item.area}</h5>
-                                <div class="card-text">
-                                    <div class="info">
-                                        <p class="d-flex align-items-center mb-1"><span class="material-symbols-outlined pe-2">travel</span><span class="days">${calculateDays(item.startDate, item.endDate)}日</span><span class="spot">${item.mainVisit}</span></p>
-                                        <p class="d-flex align-items-center"><span class="material-symbols-outlined pe-2">group</span>${item.target}</p>
-                                    </div>
-                                    <p>${toShortDate(item.startDate)}~${toShortDate(item.endDate)}(${toChineseDate(item.startDate, true)}-${toChineseDate(item.endDate, true)})</p>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                </div>`
+            generalView.innerHTML += `
+                <session-card class="col-12 col-lg-3">
+                    <script type="application/json">
+                        ${JSON.stringify(item)}
+                    </script>
+                </session-card>
+            `
 
-            var section = document.createElement('section')
-            section.className = 'area container-fluid p-0'
-            section.style = `background-color: ${item.backColor || '#ffffff'}; color: ${item.textColor || '#000000'};`
-            section.innerHTML = `<a name="sec${item.session}"></a>`
-            var heroSection = `<div class="hero-section row m-0">
-                <div class="col-12 h-100 w-100 p-0" style="position: relative;">
-                    <img src="img/${item.session}/${item.session}_header.jpg">
-                    <div class="description row row-cols-1 w-100 h-100 d-flex align-items-center">
-                        <div class="inner">
-                            <p class="number">${item.code}</p>
-                            <h1 class="fw-bold">${item.area}</h1>
-                            <div class="sub rounded p-3">
-                                <p class="mx-auto detail-text">活動日期：${toChineseDate(item.startDate)}至${toChineseDate(item.endDate)}<br>報名對象：${item.target}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>`
-            var detailLinkSection = `<div class="detail-link row m-0 mb-5" style="background-color: ${item.subColor || '#000'};">
-                <div class="m-auto row col-12 col-lg-9 align-items-center">
-                    <div class="nav col-12 col-lg-6 d-flex justify-content-center justify-content-md-start align-items-center h-100">
-                        <a href="#sec${item.session}-intro" class="h-100"><div class="inner">營隊特色</div></a>
-                        <a href="#sec${item.session}-daily-schedule" class="h-100"><div class="inner">每日行程</div></a>
-                        <a href="#sec${item.session}-attention" class="h-100"><div class="inner">注意事項</div></a>
-                    </div>
-                    <div class="col-12 col-lg-6 d-flex justify-content-center justify-content-md-end align-items-center h-100 p-2">
-                        <div class="h-100">
-                            <a class="btn btn-primary${item.link !== '' && isAbleToRegister ? '' : ' disabled'}" href="${item.link !== '' && isAbleToRegister ? item.link : '#'}" target="_blank" role="button">
-                                ${(() => {
-                                    if (isAbleToRegister) {
-                                        return item.link === '' ? '尚未開放報名' : '優惠報名請點我！'
-                                    } else {
-                                        if (item.status === 'ON_SCHEDULE') {
-                                            return '出團中'
-                                        } else if (item.status === 'ENDED') {
-                                            return '本次活動已結束，感謝關注'
-                                        } else {
-                                            return '本次活動已取消'
-                                        }
-                                    } 
-                                })()}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>`
-
-            section.innerHTML += heroSection
-            section.innerHTML += detailLinkSection
-            
-            var gallery = data["gallery"][item.session] || []
-            var contentSection = `<div class="content row col-12 col-lg-9 m-auto">
-                <article class="row">
-                    <a name="sec${item.session}-intro"></a>
-                    <h1 class="text-center">營隊特色</h1>
-                    <div class="feature w-75 p-3 rounded border border-secondary border-2">
-                        ${markdownToHTML(item.feature)}
-                    </div>
-                    <div class="row mt-2 mb-2 photolist">
-                        ${gallery.map((img) => `<div class="col-4 p-2"><img src="img/${item.session}/${img.fileName}" class="img-fluid" loading="lazy" alt="${img.description || '營隊照片'}"></div>`).join('')}
-                    </div>
-                </article>`
-
-            var scheduleArticle = `<article class="row daily-schedule">
-                <a name="sec${item.session}-daily-schedule"></a>`
-            var schedule = data["schedule"][item.session]
-            if (schedule) {
-                schedule.forEach((daily) => {
-                    var title = daily.theme != '' ? `${daily.theme}-${daily.route}` : daily.route
-                    var dailySection = `<div class="row col-12 daily daily-row">
-                        <div class="col-12 col-lg-2 d-flex flex-row flex-lg-column align-items-center gap-2 gap-lg-3"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
-                        <div class="col-12 col-lg-7 d-flex align-items-center p-1"><h2>${title.replace('\n', '<br>')}</h2></div>
-                        <div class="col-12 col-lg-3 row pt-3 pt-lg-0">
-                            ${daily.breakfast ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">free_breakfast</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>` : ''}
-                            ${daily.lunch ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">lunch_dining</span>午餐</div><div class="col-8 col-lg-8">${daily.lunch}</div>` : ''}
-                            ${daily.dinner ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">restaurant</span>晚餐</div><div class="col-8 col-lg-8">${daily.dinner}</div>` : ''}
-                            ${daily.accommodation ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">hotel</span>旅館</div><div class="col-8 col-lg-8">${daily.accommodation}</div>` : ''}
-                        </div>
-                    </div>`
-                    scheduleArticle += dailySection
-                })
-            }
-
-            var flights = data["flight"][item.session]
-            if (flights) {
-                scheduleArticle += `<div class="row col-12 flight pt-4">
-                    <h2 class="col-12 pb-2">參考航班<small class="text-secondary ps-2 fs-6">航班時間僅為參考。</small></h2>`
-                flights.forEach((flight) => {
-                    var boundText = ''
-                    if (flight.type === 'outbound') {
-                        boundText = '去程'
-                    } else if (flight.type === 'inbound') {
-                        boundText = '返程'
-                    } else {
-                        boundText = '轉程'
-                    }
-                    var departAirportText = flight.departAirportRuby !== '' ? `<ruby>${flight.departAirport}<rp>(</rp><rt>${flight.departAirportRuby}</rt><rp>)</rp></ruby>` : flight.departAirport
-                    var arriveAirportText = flight.arriveAirportRuby !== '' ? `<ruby>${flight.arriveAirport}<rp>(</rp><rt>${flight.arriveAirportRuby}</rt><rp>)</rp></ruby>` : flight.arriveAirport
-                    scheduleArticle += `<div class="col-12 row flight-row d-flex align-items-center border border-primary border-1 rounded p-1">
-                        <div class="col-2 col-lg-1">
-                            <p class="badge rounded-pill text-bg-info fs-6 m-0">${boundText}</p>
-                        </div>
-                        <div class="col-10 col-lg-4">
-                            <p class="fs-6 m-0">${flight.flight}</p>
-                        </div>
-                        <div class="col-3 d-flex flex-column align-items-center">
-                            <p class="fw-bold m-0">${flight.departDate} ${flight.departTime}</p>
-                            <p class="m-0">${departAirportText}</p>
-                        </div>
-                        <div class="col-6 col-lg-1">
-                            <span class="spend-time w-100">${flight.duration}</span>
-                        </div>
-                        <div class="col-3 d-flex flex-column align-items-center">
-                            <p class="fw-bold m-0">${flight.arriveDate} ${flight.arriveTime}</p>
-                            <p class="m-0">${arriveAirportText}</p>
-                        </div>
-                    </div>`
-                })
-                scheduleArticle += `<ul class="post-script">
-                        <li>以上航班時間僅供參考，實際以航空公司最後之公告航班時間為準。</li>
-                    </ul>
-                </div>`
-            }
-
-            scheduleArticle += `</article>`
-            contentSection += scheduleArticle
-
-            var attentionArticle = `<article class="row"><a name="sec${item.session}-attention"></a>`
-            attentionArticle += `<div class="col-12 mt-5 mb-5">
-                <h1 class="text-center">注意事項</h1>
-                <div class="mt-4 p-4 rounded border border-secondary border-2">
-                    <h2>經費說明</h2>
-                    <p class="fw-bold">專案優惠價：${item.price}。</p>
-                    <h3>費用包含</h3>
-                    <div class="d-flex flex-wrap justify-content-start align-items-start text-center">
-                        ${item.priceInclude.map((includeItem) => {
-                            return `<div class="d-flex flex-column align-items-center ps-1 pe-1" style="width: 4.5em;">
-                                <div class="icon icon-${includeItem}"></div>
-                                <p class="m-0">${SHEET_DAY_PRICE_LIST[includeItem] || includeItem}</p>
-                            </div>`
-                        }).join('')}
-                    </div>
-                    <h3>費用不含</h3>
-                    <div class="d-flex flex-wrap justify-content-start align-items-start text-center">
-                        ${item.priceExclude.map((excludeItem) => {
-                            return `<div class="d-flex flex-column align-items-center ps-1 pe-1" style="width: 4.5em;">
-                                <div class="icon icon-${excludeItem}"></div>
-                                <p class="m-0">${SHEET_DAY_PRICE_LIST[excludeItem] || excludeItem}</p>
-                            </div>`
-                        }).join('')}
-                    </div>
-                    <h2>特殊說明</h2>
-                    <ul>
-                        <li>報名對象：${item.target}</li>
-                        <li>人數<span class="fw-bold">${item.quota}</span>人，<span class="fw-bold">${item.waitable ? '可候補' : '無候補'}</span>。</li>
-                        ${item.otherAttention.split('\n').map(line => line.trim() !== '' ? `<li>${line}</li>` : '').join('')}
-                        <li>報名請洽：<a href="tel:${item.tel}">${item.tel}</a>&nbsp;${item.chargePerson}
-                    </ul>
-                </div>
-            </div>`
-            attentionArticle += `</article>`
-
-            contentSection += attentionArticle
-            contentSection += `</div>`
-
-            section.innerHTML += contentSection
-
-            container.appendChild(section)
+            container.innerHTML += `
+                <session-section class="area container-fluid p-0" style="--session-background-color: ${item.backColor || '#ffffff'}; --session-text-color: ${item.textColor || '#000000'};">
+                    <script type="application/json">
+                        ${JSON.stringify({item, gallery: data["gallery"][item.session] || [], schedule: data["schedule"][item.session] || [], flight: data["flight"][item.session] || []})}
+                    </script>
+                </session-section>
+            `
         })
     }).then(() => {
         const overlay = document.querySelector('.loading-overlay')
