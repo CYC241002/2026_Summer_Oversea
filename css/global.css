@@ -282,53 +282,7 @@ header.header .slogan-2 {
     margin-top: 72px;
 }
 
-.float-icons .float-icon {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 50%;
-    z-index: 1001;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);;
-    --bs-btn-hover-bg: #5ebfc6;
-}
 
-.float-icons .float-icon:hover {
-    background-color: var(--bs-btn-hover-bg);
-}
-
-.float-icons .float-icon img {
-    width: 48px;
-    height: auto;
-}
-
-.float-icons .popup {
-    position: fixed;
-    bottom: 20px;
-    right: 100px;
-    background-color: #fff;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
-    opacity: 0;
-    z-index: 1001;
-    visibility: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);;
-}
-
-.float-icons .popup.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.float-icons .popup img {
-    width: 200px;
-    height: auto;
-}
 
 /* @media (max-width: 767.99px) {
     .daily-content {
