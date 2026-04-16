@@ -95,11 +95,13 @@
             if (!scriptTag?.textContent.trim()) return
 
             try {
-                const {item, gallery, schedule, flights} = JSON.parse(scriptTag.textContent)
+                console.log(scriptTag.textContent)
+
+                const {item, gallery, schedule, flight} = JSON.parse(scriptTag.textContent)
                 this._item = item
                 this._gallery = gallery
                 this._schedule = schedule
-                this._flights = flights
+                this._flight = flight
             } catch (e) {
                 console.error("SessionCard data error:", e)
                 return
@@ -107,7 +109,7 @@
 
             if (!this._item?.session) return
 
-            this._render(this._item, this._gallery, this._schedule, this._flights)
+            this._render(this._item, this._gallery, this._schedule, this._flight)
         }
 
         _render(context, gallery, schedule, flights) {
@@ -249,13 +251,11 @@
                     background-color: RGBA(var(--bs-third-rgb),var(--bs-bg-opacity,1))!important;
                 }
 
-                /* .daily-content .card {
-                    transition: .1s;
-                }
 
-                .daily-content .card:hover {
-                    transform: scale(1.02);
-                } */
+                .daily-row .material-symbols-outlined {
+                    vertical-align: middle;
+                    padding-right: 0.1em;
+                }
 
                 .daily-row .img-fluid {
                     transition: .1s;
@@ -504,7 +504,7 @@
                                     <div class="col-12 col-lg-2 d-flex flex-row flex-lg-column align-items-center gap-2 gap-lg-3"><p class="day-count"><span class="day-count-number"></span></p><span class="text-center">${daily.date}</span></div>
                                     <div class="col-12 col-lg-7 d-flex align-items-center p-1"><h2>${title.replace('\n', '<br>')}</h2></div>
                                     <div class="col-12 col-lg-3 row pt-3 pt-lg-0">
-                                        ${daily.breakfast ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">free_breakfast</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>` : ''}
+                                        ${daily.breakfast ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">breakfast_dining</span>早餐</div><div class="col-8 col-lg-8">${daily.breakfast}</div>` : ''}
                                         ${daily.lunch ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">lunch_dining</span>午餐</div><div class="col-8 col-lg-8">${daily.lunch}</div>` : ''}
                                         ${daily.dinner ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">restaurant</span>晚餐</div><div class="col-8 col-lg-8">${daily.dinner}</div>` : ''}
                                         ${daily.accommodation ? `<div class="col-4 col-lg-4 fw-bold"><span class="material-symbols-outlined">hotel</span>旅館</div><div class="col-8 col-lg-8">${daily.accommodation}</div>` : ''}

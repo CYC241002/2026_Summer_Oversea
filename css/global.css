@@ -41,11 +41,6 @@ session-section {
       'opsz' 48;
 }
 
-.daily-row .material-symbols-outlined {
-    vertical-align: middle;
-    padding-right: 0.1em;
-}
-
 body {
     display: flex;
     flex-direction: column;
