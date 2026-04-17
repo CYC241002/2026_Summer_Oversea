@@ -11,10 +11,6 @@
             elementCampMenuLinkList.innerHTML += menuLink
         })
     }).then(() => {
-        const overlay = document.querySelector('.loading-overlay')
-        overlay.style.opacity = 0
-        setTimeout(() => {
-            overlay.style.display = 'none'
-        }, 1000)
+        document.dispatchEvent(new CustomEvent('loading-complete', { bubbles: true, composed: true }))
     })
 })()
