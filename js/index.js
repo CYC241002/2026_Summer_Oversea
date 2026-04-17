@@ -38,34 +38,34 @@
 
             this.innerHTML = `
                 <style>
-                    .card .card-text .info {
+                    session-card .card .card-text .info {
                         font-size: 0.9em;
                     }
 
-                    .card .card-text .info .spot::before {
+                    session-card .card .card-text .info .spot::before {
                         content: ' | ';
                         padding-left: 0.1em;
                         padding-right: 0.1em;
                     }
 
-                    .card {
+                    session-card .card {
                         transition: .3s;
                     }
 
-                    .card:hover {
+                    session-card .card:hover {
                         transform: scale(1.02);
                     }
 
-                    .card a {
+                    session-card .card a {
                         text-decoration: none;
                         color: #000;
                     }
 
                     @media (min-width: 1400px) {
-                        .card {
+                        session-card .card {
                             height: 27.5em;
                         }
-}
+                    }
                 </style>
                 <div>
                     <div class="card shadow-sm m-2 p-2">
@@ -119,20 +119,20 @@
 
             this.innerHTML = `
                 <style>
-                .hero-section {
+                session-section .hero-section {
                     height: 100%;
                     min-height: 400px;
                     max-height: 100vh;
                 }
 
-                .hero-section img {
+                session-section .hero-section img {
                     width: 100%;
                     height: 100vh;
                     object-fit: cover;
                     filter: brightness(60%) contrast(95%);
                 }
 
-                .hero-section .description {
+                session-section .hero-section .description {
                     position: absolute;
                     left: 0;
                     top: 0;
@@ -141,13 +141,13 @@
                     z-index: 100;
                 }
 
-                .hero-section .description .inner .number {
+                session-section .hero-section .description .inner .number {
                     font-weight: bold;
                     margin-bottom: 0.25em;
                     text-shadow: 0.1em 0.1em 0.2em #000;
                 }
 
-                .hero-section .description .inner h1 {
+                session-section .hero-section .description .inner h1 {
                     text-shadow: 0.1em 0.1em 0.2em #000;
                 }
 
@@ -158,16 +158,16 @@
                     background-color: rgba(0, 0, 0, 0.5);
                 }
 
-                .hero-section .description .inner .sub .detail-text {
+                session-section .hero-section .description .inner .sub .detail-text {
                     display: inline-block;
                     text-align: left;
                 }
 
-                .hero-section .description .emphasis {
+                session-section .hero-section .description .emphasis {
                     font-size: 1.5em;
                 }
 
-                .detail-link {
+                session-section .detail-link {
                     min-height: 3.5em;
                     position: sticky; 
                     top: 3.8em;
@@ -175,46 +175,46 @@
                     box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
                 }
 
-                .detail-link .nav a {
+                session-section .detail-link .nav a {
                     width: 8vw;
                     min-width: 96px;
                     text-decoration: none;
                 }
 
-                .detail-link .nav a .inner {
+                session-section .detail-link .nav a .inner {
                     padding: 1em;
                     transition: .3s;
                     text-align: center;
                     color: #fff;
                 }
 
-                .detail-link .nav a:hover .inner {
+                session-section .detail-link .nav a:hover .inner {
                     background-color: rgba(0, 0, 0, 0.5);
                 }
 
-                .feature-img {
+                session-section .feature-img {
                     text-align: center;
                 }
 
-                .feature-img img {
+                session-section .feature-img img {
                     width: 100%;
                     height: auto;
                 }
 
                 @media (min-width: 768px) {
-                    .feature-img img {
+                    session-section .feature-img img {
                         max-width: 600px;
                         height: auto;
                     }
                 }
 
-                .feature {
+                session-section .feature {
                     margin-top: 1em;
                     margin-left: auto;
                     margin-right: auto;
                 }
 
-                .feature p {
+                session-section .feature p {
                     font-size: 1.2em;
                     font-weight: bold;
                     margin: 0;
@@ -224,7 +224,7 @@
                     align-items: flex-start;
                 }
 
-                .feature p::before {
+                session-section .feature p::before {
                     content: '★';
                     flex-shrink: 0;
                     width: 1.5em;
@@ -233,64 +233,64 @@
                     padding-left: 0.25em;
                 }
 
-                .photolist .img-fluid {
+                session-section .photolist .img-fluid {
                     transition: .1s;
                 }
 
-                .photolist .img-fluid:hover {
+                session-section .photolist .img-fluid:hover {
                     transform: scale(1.02);
                 }
 
-                .row {
+                session-section .row {
                     margin-left: 0;
                     margin-right: 0;
                 }
 
-                .daily-header > div {
+                session-section .daily-header > div {
                     color: #000;
                     background-color: RGBA(var(--bs-third-rgb),var(--bs-bg-opacity,1))!important;
                 }
 
 
-                .daily-row .material-symbols-outlined {
+                session-section .daily-row .material-symbols-outlined {
                     vertical-align: middle;
                     padding-right: 0.1em;
                 }
 
-                .daily-row .img-fluid {
+                session-section .daily-row .img-fluid {
                     transition: .1s;
                 }
 
-                .daily-row .img-fluid:hover {
+                session-section .daily-row .img-fluid:hover {
                     transform: scale(1.02);
                 }
 
-                section.area {
+                session-section section.area {
                     background-repeat: no-repeat;
                     background-position: center bottom;
                     background-size: 100% auto;
                     background-attachment: fixed;
                 }
 
-                .daily.daily-row {
+                session-section .daily.daily-row {
                     padding-top: 2em;
                     padding-bottom: 2em;
                 }
 
-                .daily.daily-row:not(:last-child) {
+                session-section .daily.daily-row:not(:last-child) {
                     border-bottom: 1px solid var(--bs-primary-bg);
                 }
                     
-                .daily-schedule {
+                session-section .daily-schedule {
                     counter-reset: schedule-counter;
                 }
 
-                .daily-row {
+                session-section .daily-row {
                     display: flex;
                     flex-direction: column;
                 }
 
-                .daily-schedule .daily-row .day-count {
+                session-section .daily-schedule .daily-row .day-count {
                     counter-increment: schedule-counter;
                     font-size: 1.25em;
                     font-weight: bold;
@@ -300,8 +300,8 @@
                     align-self: center;
                 }
 
-                .daily-schedule .daily-row .day-count .day-count-number, 
-                .daily-schedule .daily-row .day-count .day-count-no-number {
+                session-section .daily-schedule .daily-row .day-count .day-count-number, 
+                session-section .daily-schedule .daily-row .day-count .day-count-no-number {
                     width: 4em;
                     height: 4em;
                     font-size: 0.5em;
@@ -314,38 +314,38 @@
                     padding: 0;
                 }
 
-                .daily-schedule .daily-row .day-count .day-count-number::before {
+                session-section .daily-schedule .daily-row .day-count .day-count-number::before {
                     content: "Day "counter(schedule-counter);
                 }
 
-                .daily-schedule .daily-row .day-count .day-count-no-number {
+                session-section .daily-schedule .daily-row .day-count .day-count-no-number {
                     text-align: center;
                 }
 
                 @media (min-width: 768px) {
-                    .daily-row {
+                    session-section .daily-row {
                         flex-direction: row;
                     }
 
-                    .daily-schedule .daily-row .day-count .day-count-number, 
-                    .daily-schedule .daily-row .day-count .day-count-no-number {
+                    session-section .daily-schedule .daily-row .day-count .day-count-number, 
+                    session-section .daily-schedule .daily-row .day-count .day-count-no-number {
                         width: 5em;
                         height: 5em;
                         font-size: 1em;
                     }
                 }
 
-                .daily-schedule h2 {
+                session-section .daily-schedule h2 {
                     font-size: 1.5em;
                 }
 
-                .daily-schedule h3 {
+                session-section .daily-schedule h3 {
                     font-size: 1.25em;
                 }
 
                 /* 航班資訊 */
-                .daily-schedule .flight .flight-row .spend-time::before,
-                .daily-schedule .flight .flight-row .spend-time::after {
+                session-section .daily-schedule .flight .flight-row .spend-time::before,
+                session-section .daily-schedule .flight .flight-row .spend-time::after {
                     content: ' ';
                     position: absolute;
                     width: 10px;
@@ -355,93 +355,93 @@
                     bottom: -5px;
                 }
 
-                .daily-schedule .flight .flight-row .spend-time::before {
+                session-section .daily-schedule .flight .flight-row .spend-time::before {
                     left: 0;
                     transform: translateX(-50%);
                 }
 
-                .daily-schedule .flight .flight-row .spend-time::after {
+                session-section .daily-schedule .flight .flight-row .spend-time::after {
                     right: 0;
                     transform: translateX(50%);
                 }
 
-                .daily-schedule .flight .flight-row .spend-time {
+                session-section .daily-schedule .flight .flight-row .spend-time {
                     position: relative;
                     display: inline-block;
                     text-align: center;
                     border-bottom: 1px solid #666;
                 }
 
-                .daily-schedule .flight ul.post-script {
+                session-section .daily-schedule .flight ul.post-script {
                     list-style-type: none;
                     padding-top: 1em;
                     padding-left: 20px;
                 }
 
-                .daily-schedule .flight ul.post-script li::before {
+                session-section .daily-schedule .flight ul.post-script li::before {
                     content: '※';
                     margin-right: 10px;
                 }
 
-                .price-icon {
+                session-section .price-icon {
                     width: 32px;
                     height: 32px;
                     background-image: url('img/icon_sprites.png');
                 }
 
-                .price-icon.icon-airfare { /* 機票 */
+                session-section .price-icon.icon-airfare { /* 機票 */
                     background-position: -10px -10px;
                 }
 
-                .price-icon.icon-traffic { /* 交通 */
+                session-section .price-icon.icon-traffic { /* 交通 */
                     background-position: -62px -10px;
                 }
 
-                .price-icon.icon-lodging { /* 住宿 */
+                session-section .price-icon.icon-lodging { /* 住宿 */
                     background-position: -10px -62px;
                 }
 
-                .price-icon.icon-visit { /* 參訪 */
+                session-section .price-icon.icon-visit { /* 參訪 */
                     background-position: -62px -62px;
                 }
 
-                .price-icon.icon-ticket { /* 門票 */
+                session-section .price-icon.icon-ticket { /* 門票 */
                     background-position: -114px -10px;
                 }
 
-                .price-icon.icon-catering { /* 部分餐食 */
+                session-section .price-icon.icon-catering { /* 部分餐食 */
                     background-position: -114px -62px;
                 }
 
-                .price-icon.icon-insurance { /* 保險 */
+                session-section .price-icon.icon-insurance { /* 保險 */
                     background-position: -10px -114px;
                 }
 
-                .price-icon.icon-tip { /* 小費 */
+                session-section .price-icon.icon-tip { /* 小費 */
                     background-position: -62px -114px;
                 }
 
-                .price-icon.icon-visa_fee { /* 簽證費用 */
+                session-section .price-icon.icon-visa_fee { /* 簽證費用 */
                     background-position: -114px -114px;
                 }
 
-                .price-icon.icon-consume { /* 個人消費 */
+                session-section .price-icon.icon-consume { /* 個人消費 */
                     background-position: -166px -10px;
                 }
 
-                .price-icon.icon-self_catering { /* 自理餐食 */
+                session-section .price-icon.icon-self_catering { /* 自理餐食 */
                     background-position: -166px -62px;
                 }
 
-                .price-icon.icon-personal_travel_insurance { /* 個人旅遊平安險 */
+                session-section .price-icon.icon-personal_travel_insurance { /* 個人旅遊平安險 */
                     background-position: -166px -114px; 
                 }
 
-                .price-icon.icon-hotel_tip { /* 飯店行李小費 */
+                session-section .price-icon.icon-hotel_tip { /* 飯店行李小費 */
                     background-position: -10px -166px;
                 }
                 </style>
-                <section style="background-color: var(--session-background-color, #ffffff) !important; color: var(--session-text-color, #000000) !important;">
+                <section style="background-color: ${context.backColor || '#fff'} !important; color: ${context.textColor || '#000'} !important;" class="area">
                     <a name="sec${context.session}"></a>
                     <div class="hero-section row m-0">
                         <div class="col-12 h-100 w-100 p-0" style="position: relative;">
@@ -460,9 +460,9 @@
                     <div class="detail-link row m-0 mb-5" style="background-color: ${context.subColor || '#000'} !important;">
                         <div class="m-auto row col-12 col-lg-9 align-items-center">
                             <div class="nav col-12 col-lg-6 d-flex justify-content-center justify-content-md-start align-items-center h-100">
-                                <a href="#sec${context.session}-intro" class="h-100"><div class="inner">營隊特色</div></a>
-                                <a href="#sec${context.session}-daily-schedule" class="h-100"><div class="inner">每日行程</div></a>
-                                <a href="#sec${context.session}-attention" class="h-100"><div class="inner">注意事項</div></a>
+                                <a href="#sec${context.session}-intro" class="h-100"><div class="inner" style="color: ${context.subLinkColor || '#fff'};">營隊特色</div></a>
+                                <a href="#sec${context.session}-daily-schedule" class="h-100"><div class="inner" style="color: ${context.subLinkColor || '#fff'};">每日行程</div></a>
+                                <a href="#sec${context.session}-attention" class="h-100"><div class="inner" style="color: ${context.subLinkColor || '#fff'};">注意事項</div></a>
                             </div>
                             <div class="col-12 col-lg-6 d-flex justify-content-center justify-content-md-end align-items-center h-100 p-2">
                                 <div class="h-100">
@@ -620,7 +620,7 @@
             `
 
             container.innerHTML += `
-                <session-section class="area container-fluid p-0" style="--session-background-color: ${item.backColor || '#ffffff'}; --session-text-color: ${item.textColor || '#000000'};">
+                <session-section class="area container-fluid p-0">
                     <script type="application/json">
                         ${JSON.stringify({item, gallery: data["gallery"][item.session] || [], schedule: data["schedule"][item.session] || [], flight: data["flight"][item.session] || []})}
                     </script>
