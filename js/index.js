@@ -487,7 +487,7 @@
                         <article class="row">
                             <a name="sec${context.session}-intro"></a>
                             <h1 class="text-center">營隊特色</h1>
-                            <div class="feature w-75 p-3 rounded border border-secondary border-2">
+                            <div class="feature w-75 p-3 rounded border border-secondary border-2 text-black bg-light">
                                 ${markdownToHTML(context.feature)}
                             </div>
                             <div class="row mt-2 mb-2 photolist">
@@ -523,7 +523,7 @@
 
                                     var departAirportText = flight.departAirportRuby !== '' ? `<ruby>${flight.departAirport}<rp>(</rp><rt>${flight.departAirportRuby}</rt><rp>)</rp></ruby>` : flight.departAirport
                                     var arriveAirportText = flight.arriveAirportRuby !== '' ? `<ruby>${flight.arriveAirport}<rp>(</rp><rt>${flight.arriveAirportRuby}</rt><rp>)</rp></ruby>` : flight.arriveAirport
-                                    return `<div class="col-12 row flight-row d-flex align-items-center border border-primary border-1 rounded p-1">
+                                    return `<div class="col-12 row flight-row d-flex align-items-center border border-primary border-1 rounded p-1 text-black bg-light">
                                         <div class="col-2 col-lg-1">
                                             <p class="badge rounded-pill text-bg-info fs-6 m-0">${boundText}</p>
                                         </div>
@@ -552,7 +552,7 @@
                             <a name="sec${context.session}-attention"></a>
                             <div class="col-12 mt-5 mb-5">
                                 <h1 class="text-center">注意事項</h1>
-                                <div class="mt-4 p-4 rounded border border-secondary border-2">
+                                <div class="mt-4 p-4 rounded border border-secondary border-2 text-black bg-light">
                                     <h2>經費說明</h2>
                                     <p class="fw-bold">專案優惠價：${context.price}。</p>
                                     <h3>費用包含</h3>
