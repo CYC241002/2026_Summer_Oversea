@@ -95,8 +95,6 @@
             if (!scriptTag?.textContent.trim()) return
 
             try {
-                console.log(scriptTag.textContent)
-
                 const {item, gallery, schedule, flight} = JSON.parse(scriptTag.textContent)
                 this._item = item
                 this._gallery = gallery
